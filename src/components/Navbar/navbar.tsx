@@ -27,8 +27,9 @@ export type Categories = {
 export const CustomNavbar = () => {
   const [categories, setCategories] = useState<Categories | null>(null)
   useEffect(() => {
+    const url = `${process.env.NEXT_PUBLIC_URL}/api/categories/`
     const getCategories = async () => {
-      const res = await fetch("http://localhost:8000/api/categories/")
+      const res = await fetch(url)
       const data = await res.json()
       setCategories(data)
     }
