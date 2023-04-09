@@ -1,82 +1,65 @@
 import { Layout } from "@/components/Layout/layout";
 import { DummyCard } from "@/components/dummy/card";
-import { Container, Grid, Row, Text } from "@nextui-org/react";
+import { BaseData, Posts } from "@/models/news";
+import { Base } from "@/models/news";
+import { Container, Grid, Row, Text, Link } from "@nextui-org/react";
 import { GetServerSideProps } from "next";
 import React from "react";
 
-export type News = {
-  status: string
-  totalResults: number
-  articles: Article[]
-}
 
-export type Article = {
-  source: Source
-  author: string
-  title: string
-  description: string
-  url: string
-  urlToImage: string
-  publishedAt: string
-  content: string
-}
-
-export type Source = {
-  id: string
-  name: string
-}
-
-export default function Home({ data }: { data: News }) {
+export default function Home({ posts }: { posts: Base<BaseData<Posts>> }) {
   return (
     <Layout>
-      <Headline articles={data.articles} />
-      <TrandingNews articles={data.articles} />
+      <Headline data={posts.data} />
+      <LatestNews data={posts.data} />
     </Layout>
   )
 }
 
-const TrandingNews = ({ articles }: Pick<News, "articles">) => {
-  return (
-    <Container display="flex" justify="center" color="Black">
-      <Title title="Tranding News" />
-      <Grid.Container gap={1} justify="center" direction="row" >
-        {articles.slice(6, 24).map((item, index) => {
-          return (
-            <Grid xs={12} md={4} key={index}>
-              <DummyCard title={item.title} imageUrl={item.urlToImage} desc={item.description} />
-            </Grid>
-          )
-        })}
-      </Grid.Container>
-    </Container>
-
-  )
-
+type HeadlineProps = {
+  data: BaseData<Posts>[]
 }
-
-const Headline = ({ articles }: Pick<News, "articles">) => {
+const Headline = ({ data }: HeadlineProps) => {
   return (
     <Container display="flex" justify="flex-start" >
       <Title title="Top News" />
       <Grid.Container gap={2} justify="center" >
-        {articles.slice(0, 5).map((item, index) => {
+        {data.slice(0, 5).map((post, index) => {
           if (index < 3) {
             return (
-              <Grid xs={12} md={4} key={index}>
-                <DummyCard imageUrl={item.urlToImage} title={item.title} desc={item.description} />
+              <Grid xs={12} md={4} key={post.id}>
+                <DummyCard
+                  height={340}
+                  width={"100%"}
+                  isHide={false}
+                  imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                  title={post.attributes.title}
+                />
               </Grid>
             )
           }
           if (index === 3) {
             return (
-              <Grid xs={12} md={5} key={index}>
-                <DummyCard desc={item.description} imageUrl={item.urlToImage} title={item.title} />
+              <Grid xs={12} md={5} key={post.id}>
+                <DummyCard
+                  isHide={false}
+                  width={"100%"}
+                  height={340}
+                  imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                  title={post.attributes.title}
+                />
               </Grid>
             )
           }
           return (
-            <Grid xs={12} md={7} key={index}>
-              <DummyCard imageUrl={item.urlToImage} title={item.title} desc={item.description} />
+            <Grid xs={12} md={7} key={post.id}>
+              <DummyCard
+                isHide={false}
+                height={340}
+                width={"100%"}
+                imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                title={post.attributes.title}
+              />
             </Grid>
           )
         })}
@@ -84,6 +67,40 @@ const Headline = ({ articles }: Pick<News, "articles">) => {
     </Container>
   )
 }
+
+
+const LatestNews = ({ data }: HeadlineProps) => {
+  return (
+    <Container display="flex" justify="flex-start" >
+      <Title title="Latest News" />
+      <Grid.Container gap={2} justify="center" >
+        {data.map((post) => {
+          return (
+            <Grid xs={12} md={4} key={post.id}>
+              <Row>
+                <DummyCard
+                  isHide={true}
+                  width={"100%"}
+                  height={150}
+                  imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                  title={post.attributes.title}
+                />
+                <Text b css={{
+                  margin: "10px"
+                }}>
+                  <Link color={"success"} href={`/posts/${post.attributes.slug}`}>
+                    {post.attributes.title} {post.attributes.slug} {post.id}
+                  </Link>
+                </Text>
+              </Row>
+            </Grid>
+          )
+        })}
+      </Grid.Container>
+    </Container>
+  )
+}
+
 
 const Title = ({ title }: { title: string }) => {
   return (
@@ -104,10 +121,9 @@ const Title = ({ title }: { title: string }) => {
 
 
 export const getServerSideProps: GetServerSideProps = async (_) => {
-  const result = await fetch("https://newsapi.org/v2/everything?q=apple&from=2023-04-07&to=2023-04-07&sortBy=popularity&apiKey=de5c04e1eca847a9a80d5b62ef6b4223")
-  const data = await result.json() as News
-
+  const result = await fetch("http://127.0.0.1:8000/api/posts?populate=*&pagination[1]=1&pagination[pageSize]=20")
+  const posts: Promise<Base<Posts>> = await result.json()
   return {
-    props: { data }
+    props: { posts }
   }
 }

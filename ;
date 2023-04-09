@@ -1,0 +1,42 @@
+import { Layout } from "@/components/Layout/layout"
+import { Base, BaseData, Posts } from "@/models/news"
+import { Container } from "@nextui-org/react"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+
+const ReadPost = () => {
+  const router = useRouter()
+  const { read } = router.query
+  const [loading, setLoading] = useState<boolean>()
+
+  const [post, setPost] = useState<Base<BaseData<Posts>>>()
+
+  useEffect(() => {
+    setLoading(true)
+    const getPost = async () => {
+      const res = await fetch(`http://localhost:8000/api/posts?populate=thumb&filters[slug][$eq]=${read}`)
+      const post = await res.json()
+      setPost(post)
+    }
+    getPost()
+    setLoading(false)
+  }, [read])
+
+  if (loading) return (<>Loading</>)
+
+  if (!post) return (<>Oops</>)
+
+  if (post) {
+    return (
+      <Layout>
+        <Container>
+          {JSON.stringify(post)}
+        </Container>
+      </Layout>
+    )
+  }
+}
+
+export default ReadPost
+
+
