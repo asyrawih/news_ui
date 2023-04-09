@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: '/uploads/:path*',
-        destination: `${process.env.NEXT_PUBLIC_URL}/uploads/:path*`
+        destination: "http://" + process.env.NEXT_PUBLIC_URL + `/uploads/:path*`
       }
     ]
   }
