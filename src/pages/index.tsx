@@ -8,7 +8,6 @@ import React from "react";
 
 
 export default function Home({ posts }: { posts: Base<BaseData<Posts>> }) {
-  console.log(process.env.NEXT_PUBLIC_API_URL)
   return (
     <Layout>
       <Headline data={posts.data} />
