@@ -2,13 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost']
+    domains: ['localhost', 'backend.asyrawih.id']
   },
   rewrites: async () => {
     return [
       {
         source: '/uploads/:path*',
-        destination: "http://" + process.env.NEXT_PUBLIC_URL + `/uploads/:path*`
+        destination: process.env.NEXT_PUBLIC_API_URL + `/uploads/:path*`
       }
     ]
   }
