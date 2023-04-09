@@ -89,7 +89,7 @@ const LatestNews = ({ data }: HeadlineProps) => {
                   margin: "10px"
                 }}>
                   <Link color={"success"} href={`/posts/${post.attributes.slug}`}>
-                    {post.attributes.title} {post.attributes.slug} {post.id}
+                    {post.attributes.title}
                   </Link>
                 </Text>
               </Row>
