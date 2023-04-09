@@ -8,6 +8,7 @@ import React from "react";
 
 
 export default function Home({ posts }: { posts: Base<BaseData<Posts>> }) {
+  console.log(process.env.NEXT_PUBLIC_API_URL)
   return (
     <Layout>
       <Headline data={posts.data} />
@@ -32,7 +33,7 @@ const Headline = ({ data }: HeadlineProps) => {
                   height={340}
                   width={"100%"}
                   isHide={false}
-                  imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                  imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
                   title={post.attributes.title}
                 />
               </Grid>
@@ -45,7 +46,7 @@ const Headline = ({ data }: HeadlineProps) => {
                   isHide={false}
                   width={"100%"}
                   height={340}
-                  imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                  imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
                   title={post.attributes.title}
                 />
               </Grid>
@@ -57,7 +58,7 @@ const Headline = ({ data }: HeadlineProps) => {
                 isHide={false}
                 height={340}
                 width={"100%"}
-                imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
                 title={post.attributes.title}
               />
             </Grid>
@@ -82,7 +83,7 @@ const LatestNews = ({ data }: HeadlineProps) => {
                   isHide={true}
                   width={"100%"}
                   height={150}
-                  imageUrl={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                  imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
                   title={post.attributes.title}
                 />
                 <Text b css={{
@@ -121,7 +122,8 @@ const Title = ({ title }: { title: string }) => {
 
 
 export const getServerSideProps: GetServerSideProps = async (_) => {
-  const result = await fetch("http://127.0.0.1:8000/api/posts?populate=*&pagination[1]=1&pagination[pageSize]=20")
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/posts?populate=*&pagination[1]=1&pagination[pageSize]=20`
+  const result = await fetch(url)
   const posts: Promise<Base<Posts>> = await result.json()
   return {
     props: { posts }

@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout/layout"
 import { Base, BaseData, Posts } from "@/models/news"
-import { Card, Col, Container, Image, Row, Text } from "@nextui-org/react"
+import { Col, Container, Image, Text } from "@nextui-org/react"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
 const ReadPost = ({ post }: { post: Base<BaseData<Posts>> }) => {
@@ -11,13 +11,13 @@ const ReadPost = ({ post }: { post: Base<BaseData<Posts>> }) => {
           return (
             <Col key={post.id}>
               <Image
-                src={`http://localhost:8000${post.attributes.thumb.data.attributes.url}`}
+                src={`${post.attributes.thumb.data.attributes.url}`}
                 alt={post.attributes.title}
                 width={"100%"}
                 objectFit="fill"
                 height={500}
               />
-              <Text h1 b >{post.attributes.title}</Text>
+              <Text h3 b >{post.attributes.title}</Text>
               <div
                 style={{
                   display: "flex",
@@ -44,7 +44,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   const { params } = ctx
   const read = params?.read ?? ""
 
-  const res = await fetch(`http://127.0.0.1:8000/api/posts?populate=thumb&filters[slug][$eq]=${read}`)
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
+
+  const res = await fetch(baseUrl + `/api/posts?populate=thumb&filters[slug][$eq]=${read}`)
   const post: Promise<Base<Posts>> = await res.json()
 
   return {
