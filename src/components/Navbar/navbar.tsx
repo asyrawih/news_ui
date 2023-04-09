@@ -1,6 +1,8 @@
 import { Navbar, Spacer, Text } from "@nextui-org/react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useTheme as useNextTheme } from 'next-themes'
+import { Switch, useTheme } from '@nextui-org/react'
 
 
 export type Categories = {
@@ -26,6 +28,10 @@ export type Categories = {
 
 export const CustomNavbar = () => {
   const [categories, setCategories] = useState<Categories | null>(null)
+  const { setTheme } = useNextTheme();
+  const { isDark } = useTheme();
+
+
   useEffect(() => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/categories/`
     const getCategories = async () => {
@@ -51,6 +57,10 @@ export const CustomNavbar = () => {
             <Navbar.Link key={item.id} id={item.attributes.slug} href="/">{item.attributes.category.toUpperCase()}</Navbar.Link>
           )
         })}
+        <Switch
+          checked={isDark}
+          onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
+        />
       </Navbar.Content>
       <Navbar.Collapse>
         {categories?.data.map((item) => {
