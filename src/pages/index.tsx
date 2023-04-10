@@ -82,6 +82,7 @@ const LatestNews = ({ data }: HeadlineProps) => {
             <Grid xs={12} md={4} key={post.id}>
               <Row>
                 <DummyCard
+                  slug={post.attributes.slug}
                   isHide={true}
                   width={"100%"}
                   height={150}
