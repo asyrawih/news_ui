@@ -30,6 +30,7 @@ const Headline = ({ data }: HeadlineProps) => {
               <Grid xs={12} md={4} key={post.id}>
                 <DummyCard
                   height={340}
+                  slug={post.attributes.slug}
                   width={"100%"}
                   isHide={false}
                   imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
@@ -42,6 +43,7 @@ const Headline = ({ data }: HeadlineProps) => {
             return (
               <Grid xs={12} md={5} key={post.id}>
                 <DummyCard
+                  slug={post.attributes.slug}
                   isHide={false}
                   width={"100%"}
                   height={340}
@@ -54,6 +56,7 @@ const Headline = ({ data }: HeadlineProps) => {
           return (
             <Grid xs={12} md={7} key={post.id}>
               <DummyCard
+                slug={post.attributes.slug}
                 isHide={false}
                 height={340}
                 width={"100%"}
@@ -107,7 +110,7 @@ const Title = ({ title }: { title: string }) => {
     <Container display="flex" justify="space-around" css={{
       marginTop: "2rem"
     }}>
-      <Row justify="space-between" align="flex-end">
+      <Row justify="space-between" align="center">
         <Text h2>
           {title}
         </Text>

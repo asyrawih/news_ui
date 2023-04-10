@@ -1,9 +1,10 @@
 import { Layout } from "@/components/Layout/layout"
 import { Base, BaseData, Posts } from "@/models/news"
-import { Col, Container, Image, Text } from "@nextui-org/react"
+import { Col, Container, Image, Spacer, Text, useTheme } from "@nextui-org/react"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
 const ReadPost = ({ post }: { post: Base<BaseData<Posts>> }) => {
+  const { isDark } = useTheme()
   return (
     <Layout>
       <Container display="flex">
@@ -17,13 +18,23 @@ const ReadPost = ({ post }: { post: Base<BaseData<Posts>> }) => {
                 objectFit="fill"
                 height={500}
               />
-              <Text h3 b >{post.attributes.title}</Text>
+              {
+                isDark ? (
+                  <Text h3 b
+                    css={{
+                      textGradient: "45deg, $blue600 -20%, $pink600 50%"
+                    }}
+                  >{post.attributes.title}</Text>
+                ) : (
+                  <Text h3 b>{post.attributes.title}</Text>
+                )
+              }
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
                 dangerouslySetInnerHTML={{ __html: post.attributes.content }}
               >
@@ -32,7 +43,8 @@ const ReadPost = ({ post }: { post: Base<BaseData<Posts>> }) => {
           )
         })}
       </Container>
-    </Layout>
+      <Spacer y={3} />
+    </Layout >
   )
 }
 

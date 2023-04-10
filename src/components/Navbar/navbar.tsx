@@ -47,9 +47,11 @@ export const CustomNavbar = () => {
       <Navbar.Brand>
         <Navbar.Toggle aria-label="toggle navigation" />
         <Spacer y={10} />
-        <Text b color="inherit" hideIn="xs">
-          CyberCrime Tv
-        </Text>
+        <Link href={"/"}>
+          <Text b hideIn="xs">
+            CyberCrime Tv
+          </Text>
+        </Link>
       </Navbar.Brand>
       <Navbar.Content hideIn={"xs"}>
         {categories?.data.map((item) => {
@@ -66,9 +68,10 @@ export const CustomNavbar = () => {
         {categories?.data.map((item) => {
           return (
             <Navbar.CollapseItem key={item.id}>
-              <Link
-                href={`/category/${item.attributes.slug}`}>
-                {item.attributes.category.toUpperCase()}
+              <Link href={`/category/${item.attributes.slug}`}>
+                <Text>
+                  {item.attributes.category.toUpperCase()}
+                </Text>
               </Link>
             </Navbar.CollapseItem>
           )

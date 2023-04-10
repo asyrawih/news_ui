@@ -1,4 +1,4 @@
-import { Card, Col, Text } from "@nextui-org/react"
+import { Card, Col, Link, Text } from "@nextui-org/react"
 import React from "react"
 
 type DummyProps = {
@@ -7,6 +7,7 @@ type DummyProps = {
   height: number
   isHide: boolean
   width: number | string
+  slug: string
 }
 
 export const DummyCard: React.FC<DummyProps> = (
@@ -15,7 +16,8 @@ export const DummyCard: React.FC<DummyProps> = (
     title,
     height,
     width,
-    isHide
+    isHide,
+    slug
   }
 ) => {
 
@@ -28,9 +30,11 @@ export const DummyCard: React.FC<DummyProps> = (
             </Text>
           )}
           {!isHide && (
-            <Text h4 color="white">
-              {title}
-            </Text>
+            <Link href={`/posts/${slug}`}>
+              <Text h4 color="white">
+                {title}
+              </Text>
+            </Link>
           )}
         </Col>
       </Card.Header>
