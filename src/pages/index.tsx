@@ -1,13 +1,24 @@
 import { Layout } from "@/components/Layout/layout";
 import { DummyCard } from "@/components/dummy/card";
+import { Query, useMediaQuery } from "@/hooks/media-query";
 import { BaseData, Posts } from "@/models/news";
 import { Base } from "@/models/news";
 import { Container, Grid, Row, Text, Link } from "@nextui-org/react";
 import { GetStaticProps } from "next";
-import React from "react";
+import React, { useEffect } from "react";
 
 
 export default function Home({ posts }: { posts: Base<BaseData<Posts>> }) {
+
+  const isMobile = useMediaQuery({
+    query: Query.sm
+  });
+
+  useEffect(() => {
+    console.log(isMobile, "Oke Mobile Change")
+  }, [isMobile])
+
+
   return (
     <Layout>
       <Headline data={posts.data} />

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useTheme as useNextTheme } from 'next-themes'
 import { Switch, useTheme } from '@nextui-org/react'
+import { Query, useMediaQuery } from "@/hooks/media-query"
 
 
 export type Categories = {
@@ -30,6 +31,10 @@ export const CustomNavbar = () => {
   const [categories, setCategories] = useState<Categories | null>(null)
   const { setTheme } = useNextTheme();
   const { isDark } = useTheme();
+
+  const isMobile = useMediaQuery({
+    query: Query.sm
+  })
 
 
   useEffect(() => {
@@ -59,11 +64,20 @@ export const CustomNavbar = () => {
             <Navbar.Link key={item.id} id={item.attributes.slug} href="/">{item.attributes.category.toUpperCase()}</Navbar.Link>
           )
         })}
-        <Switch
+
+        {!isMobile && <Switch
           checked={isDark}
           onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
-        />
+        /> }
+
       </Navbar.Content>
+
+      {isMobile && <Switch
+        checked={isDark}
+        onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
+      />}
+
+
       <Navbar.Collapse>
         {categories?.data.map((item) => {
           return (
