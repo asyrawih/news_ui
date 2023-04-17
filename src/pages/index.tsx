@@ -3,7 +3,7 @@ import { DummyCard } from "@/components/dummy/card";
 import { BaseData, Posts } from "@/models/news";
 import { Base } from "@/models/news";
 import { Container, Grid, Row, Text, Link } from "@nextui-org/react";
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import React from "react";
 
 
@@ -124,11 +124,12 @@ const Title = ({ title }: { title: string }) => {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async (_) => {
+export const getStaticProps: GetStaticProps = async () => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/posts?populate=*&pagination[1]=1&pagination[pageSize]=20`
   const result = await fetch(url)
-  const posts: Promise<Base<Posts>> = await result.json()
+  const posts: Promise<Base<BaseData<Posts>>> = await result.json()
   return {
-    props: { posts }
+    props: { posts },
+    revalidate: 30
   }
 }
