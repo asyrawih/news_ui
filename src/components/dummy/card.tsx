@@ -10,7 +10,7 @@ type DummyProps = {
   slug: string
 }
 
-export const DummyCard: React.FC<DummyProps> = (
+export const NewsCard: React.FC<DummyProps> = (
   {
     imageUrl,
     title,

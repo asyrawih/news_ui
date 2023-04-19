@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout/layout";
-import { DummyCard } from "@/components/dummy/card";
+import { NewsCard } from "@/components/dummy/card";
 import { Query, useMediaQuery } from "@/hooks/media-query";
 import { BaseData, Posts } from "@/models/news";
 import { Base } from "@/models/news";
@@ -39,8 +39,8 @@ const Headline = ({ data }: HeadlineProps) => {
           if (index < 3) {
             return (
               <Grid xs={12} md={4} key={post.id}>
-                <DummyCard
-                  height={340}
+                <NewsCard
+                  height={200}
                   slug={post.attributes.slug}
                   width={"100%"}
                   isHide={false}
@@ -53,7 +53,7 @@ const Headline = ({ data }: HeadlineProps) => {
           if (index === 3) {
             return (
               <Grid xs={12} md={5} key={post.id}>
-                <DummyCard
+                <NewsCard
                   slug={post.attributes.slug}
                   isHide={false}
                   width={"100%"}
@@ -66,7 +66,7 @@ const Headline = ({ data }: HeadlineProps) => {
           }
           return (
             <Grid xs={12} md={7} key={post.id}>
-              <DummyCard
+              <NewsCard
                 slug={post.attributes.slug}
                 isHide={false}
                 height={340}
@@ -92,7 +92,7 @@ const LatestNews = ({ data }: HeadlineProps) => {
           return (
             <Grid xs={12} md={4} key={post.id}>
               <Row>
-                <DummyCard
+                <NewsCard
                   slug={post.attributes.slug}
                   isHide={true}
                   width={"100%"}

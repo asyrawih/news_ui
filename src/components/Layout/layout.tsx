@@ -1,5 +1,7 @@
 import dynamic from "next/dynamic";
 import React from "react";
+import { StickyBar } from "../StickyBar/stickybar";
+import { Row } from "@nextui-org/react";
 
 
 const CustomNavbar = dynamic(() => import('../Navbar/navbar').then(mod => mod.CustomNavbar), {
@@ -15,6 +17,13 @@ export const Layout: React.FC<Layout> = ({ children }) => {
     <>
       <CustomNavbar />
       {children}
+      <Row 
+        css={{
+          marginTop: "$20"
+        }}
+      >
+        <StickyBar />
+      </Row>
     </>
   );
 }
