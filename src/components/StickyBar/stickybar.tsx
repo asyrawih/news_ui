@@ -24,7 +24,7 @@ export const StickyBar = () => {
     borderRadius: "3px",
     height: "80px",
     position: "fixed",
-    width: "100vw",
+    width: "100%",
     bottom: "$0",
   })
 
@@ -57,15 +57,15 @@ export const StickyBar = () => {
         <StickyContiner>
           <StickyContent>
             {router.pathname == "/posts/[read]" &&
-              <StickyIcon>
-                <ArrowLeft onClick={handleBack} />
+              <StickyIcon onClick={handleBack}>
+                <ArrowLeft />
                 <Spacer x={0.12} />
                 <Text>Back</Text>
               </StickyIcon>
             }
 
-            <StickyIcon>
-              <ArrowUp onClick={handleToTop} />
+            <StickyIcon onClick={handleToTop}>
+              <ArrowUp />
               <Text>Top</Text>
             </StickyIcon>
           </StickyContent>

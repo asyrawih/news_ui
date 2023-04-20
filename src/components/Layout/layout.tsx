@@ -1,7 +1,8 @@
 import dynamic from "next/dynamic";
 import React from "react";
 import { StickyBar } from "../StickyBar/stickybar";
-import { Row } from "@nextui-org/react";
+import { Container, Spacer } from "@nextui-org/react";
+import { Query, useMediaQuery } from "@/hooks/media-query";
 
 
 const CustomNavbar = dynamic(() => import('../Navbar/navbar').then(mod => mod.CustomNavbar), {
@@ -13,17 +14,23 @@ type Layout = {
 }
 
 export const Layout: React.FC<Layout> = ({ children }) => {
+  const isMobile = useMediaQuery({ query: Query.sm })
   return (
     <>
-      <CustomNavbar />
-      {children}
-      <Row 
-        css={{
-          marginTop: "$20"
-        }}
-      >
-        <StickyBar />
-      </Row>
+      {!isMobile &&
+        <Container lg >
+          <CustomNavbar />
+          {children}
+        </Container>
+      }
+      {isMobile &&
+        <>
+          <CustomNavbar />
+          {children}
+        </>
+      }
+      <Spacer y={5} />
+      <StickyBar />
     </>
   );
 }

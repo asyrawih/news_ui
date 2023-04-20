@@ -40,7 +40,7 @@ export const NewsCard: React.FC<DummyProps> = (
       </Card.Header>
       <Card.Image
         src={imageUrl}
-        objectFit="cover"
+        objectFit="fill"
         width={width}
         height={height}
         alt="Card image background"

@@ -1,22 +1,14 @@
 import { Layout } from "@/components/Layout/layout";
 import { NewsCard } from "@/components/dummy/card";
-import { Query, useMediaQuery } from "@/hooks/media-query";
 import { BaseData, Posts } from "@/models/news";
 import { Base } from "@/models/news";
 import { Container, Grid, Row, Text, Link } from "@nextui-org/react";
 import { GetStaticProps } from "next";
-import React, { useEffect } from "react";
+import Head from "next/head";
+import React from "react";
 
 
 export default function Home({ posts }: { posts: Base<BaseData<Posts>> }) {
-
-  const isMobile = useMediaQuery({
-    query: Query.sm
-  });
-
-  useEffect(() => {
-    console.log(isMobile, "Oke Mobile Change")
-  }, [isMobile])
 
 
   return (
@@ -32,53 +24,59 @@ type HeadlineProps = {
 }
 const Headline = ({ data }: HeadlineProps) => {
   return (
-    <Container display="flex" justify="flex-start" >
-      <Title title="Top News" />
-      <Grid.Container gap={2} justify="center" >
-        {data.slice(0, 5).map((post, index) => {
-          if (index < 3) {
+    <>
+      <Head>
+        <title>Cybercrime News</title>
+      </Head>
+      <Container
+        display="flex" justify="flex-start" >
+        <Title title="Top News" />
+        <Grid.Container gap={2} justify="center" >
+          {data.slice(0, 5).map((post, index) => {
+            if (index < 3) {
+              return (
+                <Grid xs={12} md={4} key={post.id}>
+                  <NewsCard
+                    height={200}
+                    slug={post.attributes.slug}
+                    width={"100%"}
+                    isHide={false}
+                    imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
+                    title={post.attributes.title}
+                  />
+                </Grid>
+              )
+            }
+            if (index === 3) {
+              return (
+                <Grid xs={12} md={5} key={post.id}>
+                  <NewsCard
+                    slug={post.attributes.slug}
+                    isHide={false}
+                    width={"100%"}
+                    height={340}
+                    imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
+                    title={post.attributes.title}
+                  />
+                </Grid>
+              )
+            }
             return (
-              <Grid xs={12} md={4} key={post.id}>
-                <NewsCard
-                  height={200}
-                  slug={post.attributes.slug}
-                  width={"100%"}
-                  isHide={false}
-                  imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
-                  title={post.attributes.title}
-                />
-              </Grid>
-            )
-          }
-          if (index === 3) {
-            return (
-              <Grid xs={12} md={5} key={post.id}>
+              <Grid xs={12} md={7} key={post.id}>
                 <NewsCard
                   slug={post.attributes.slug}
                   isHide={false}
-                  width={"100%"}
                   height={340}
+                  width={"100%"}
                   imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
                   title={post.attributes.title}
                 />
               </Grid>
             )
-          }
-          return (
-            <Grid xs={12} md={7} key={post.id}>
-              <NewsCard
-                slug={post.attributes.slug}
-                isHide={false}
-                height={340}
-                width={"100%"}
-                imageUrl={`${process.env.NEXT_PUBLIC_API_URL + post.attributes.thumb.data.attributes.url}`}
-                title={post.attributes.title}
-              />
-            </Grid>
-          )
-        })}
-      </Grid.Container>
-    </Container>
+          })}
+        </Grid.Container>
+      </Container>
+    </>
   )
 }
 
@@ -136,7 +134,7 @@ const Title = ({ title }: { title: string }) => {
 
 
 export const getStaticProps: GetStaticProps = async () => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/posts?populate=*&pagination[1]=1&pagination[pageSize]=20`
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/posts?populate=*&pagination[1]=1&pagination[pageSize]=20&sort=createdAt:DESC`
   const result = await fetch(url)
   const posts: Promise<Base<BaseData<Posts>>> = await result.json()
   return {

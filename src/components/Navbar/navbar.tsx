@@ -48,7 +48,7 @@ export const CustomNavbar = () => {
   }, [])
 
   return (
-    <Navbar variant="sticky" maxWidth={"lg"}>
+    <Navbar variant="sticky" maxWidth={"xl"}>
       <Navbar.Brand>
         <Navbar.Toggle aria-label="toggle navigation" />
         <Spacer y={10} />
