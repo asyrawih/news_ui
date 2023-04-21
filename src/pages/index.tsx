@@ -27,6 +27,7 @@ const Headline = ({ data }: HeadlineProps) => {
     <>
       <Head>
         <title>Cybercrime News</title>
+        <meta name="description" content={JSON.stringify(data)} />
       </Head>
       <Container
         display="flex" justify="flex-start" >
